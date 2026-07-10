@@ -3,7 +3,7 @@ terraform {
     bucket         = "my-unique-tf-state-bucket-name-20hph2602"
     key            = "live/dev/01-foundation/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "my-tf-lock-table-aayushi-20hph"
+    use_lockfile   = true
     encrypt        = true
     profile        = "AJ-PHP-LZ"
   }

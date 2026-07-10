@@ -1,0 +1,12 @@
+# AWS Authentication
+aws_profile = "AJ-PHP-LZ"
+region      = "us-east-1"
+
+# Project
+environment = "dev"
+project     = "bedrock-kb"
+
+# Vector Store Selection
+vector_store_type       = "opensearch-serverless" # or "s3-vectors"
+enable_standby_replicas = false
+vector_index_name       = "bedrock-index"
