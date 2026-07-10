@@ -1,0 +1,24 @@
+# AWS Authentication
+aws_profile = "AJ"
+region      = "us-east-1"
+
+# Project
+environment = "dev"
+project     = "kb-test"
+
+# IAM
+create_role                = true
+s3_data_bucket_arns        = ["arn:aws:s3:::your-data-bucket-name/*"]
+enable_secrets_manager     = false
+transformation_lambda_arns = []
+
+# KMS — enable/disable each key independently
+enable_data_source_key        = true
+enable_transient_storage_key  = false
+enable_multimodal_storage_key = false
+enable_vector_store_key       = true
+
+# Logging — enable/disable each destination independently
+enable_cloudwatch_logging = true
+enable_s3_logging         = false
+enable_firehose_logging   = false
