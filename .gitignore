@@ -1,5 +1,8 @@
 # Documentation
-docs/
+docs/*
+
+# Don't ignore moduleContract.md
+!docs/module-contracts.md
 
 # Local .terraform directories
 live/demo/*/.terraform/
