@@ -64,6 +64,7 @@ module "opensearch_serverless" {
   kms_key_arn             = local.kms_key_arn != "" ? local.kms_key_arn : null
   role_arn                = local.role_arn
   vector_index_name       = var.vector_index_name
+  vector_dimensions       = var.vector_dimensions
   
   tags = local.tags
 }
@@ -75,6 +76,7 @@ module "s3_vectors" {
   bucket_name       = "${local.name_prefix}-s3v"
   kms_key_arn       = local.kms_key_arn != "" ? local.kms_key_arn : null
   vector_index_name = var.vector_index_name
+  vector_dimensions = var.vector_dimensions
 
   tags = local.tags
 }

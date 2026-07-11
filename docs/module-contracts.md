@@ -63,7 +63,7 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `role_arn` (string)
 - `vector_index_name` (string, default: "bedrock-knowledge-base-default-index")
 - `vector_field_name` (string, default: "bedrock-embedding")
-- `vector_dimensions` (number, default: 1536)
+- `vector_dimensions` (number, default: 1024)
 - `metadata_field_name` (string, default: "AMAZON_BEDROCK_METADATA")
 - `text_field_name` (string, default: "AMAZON_BEDROCK_TEXT_CHUNK")
 - `tags` (map(string), default: {})
@@ -79,7 +79,7 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 ### Inputs
 - `bucket_name` (string)
 - `vector_index_name` (string, default: "default-index")
-- `vector_dimensions` (number, default: 1536)
+- `vector_dimensions` (number, default: 1024)
 - `distance_metric` (string, default: "cosine")
 - `metadata_field_name` (string, default: "metadata")
 - `text_field_name` (string, default: "text")

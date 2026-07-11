@@ -36,3 +36,9 @@ variable "vector_index_name" {
   description = "Name of the vector index"
   default     = "bedrock-index"
 }
+
+variable "vector_dimensions" {
+  type        = number
+  description = "Dimensions of the vector index"
+  default     = 1024
+}

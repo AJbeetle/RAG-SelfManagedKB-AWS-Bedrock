@@ -13,6 +13,6 @@ output "storage_configuration_block" {
 }
 
 output "vector_store_id" {
-  value       = local.selected_module_type.vector_store_id
+  value       = try(module.opensearch_serverless[0].vector_store_id, module.s3_vectors[0].vector_store_arn, null)
   description = "The vector store ID"
 }

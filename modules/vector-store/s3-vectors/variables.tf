@@ -12,7 +12,7 @@ variable "vector_index_name" {
 variable "vector_dimensions" {
   type        = number
   description = "Dimensions of the vector"
-  default     = 1536
+  default     = 1024
 }
 
 variable "distance_metric" {
