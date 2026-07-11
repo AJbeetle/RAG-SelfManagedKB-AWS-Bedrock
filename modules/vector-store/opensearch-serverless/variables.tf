@@ -41,7 +41,7 @@ variable "vector_field_name" {
 variable "vector_dimensions" {
   type        = number
   description = "Number of dimensions for the vector field"
-  default     = 1536
+  default     = 1536 #for Titan Embed V2, but use 1024 It covers mostly vector store indexes vector dimensions and mostly embedding models too
 }
 
 variable "metadata_field_name" {

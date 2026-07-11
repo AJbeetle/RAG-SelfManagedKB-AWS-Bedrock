@@ -3,7 +3,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = ">= 6.54.0"
+    }
+    opensearch = {
+      source  = "opensearch-project/opensearch"
+      version = "~> 2.2"
     }
   }
 }
@@ -11,6 +15,17 @@ terraform {
 provider "aws" {
   region  = var.region
   profile = var.aws_profile
+}
+
+provider "opensearch" {
+  url         = var.vector_store_type == "opensearch-serverless" ? module.opensearch_serverless[0].collection_endpoint : "https://dummy.us-east-1.aoss.amazonaws.com"
+  aws_profile = var.aws_profile
+  # Authentication is handled automatically via AWS credentials from environment/profile if healthcheck is configured
+  healthcheck = false
+  # SigV4 is required for AOSS
+  # aws_signature_version = "v4"
+  sign_aws_requests = true
+  aws_region = var.region
 }
 
 data "terraform_remote_state" "foundation" {
@@ -39,6 +54,10 @@ locals {
 module "opensearch_serverless" {
   source = "../../../modules/vector-store/opensearch-serverless"
   count  = var.vector_store_type == "opensearch-serverless" ? 1 : 0
+  
+  providers = {
+    opensearch = opensearch
+  }
 
   collection_name         = "${local.name_prefix}-oss"
   enable_standby_replicas = var.enable_standby_replicas

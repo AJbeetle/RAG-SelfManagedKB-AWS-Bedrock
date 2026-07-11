@@ -6,7 +6,7 @@ output "storage_configuration_type" {
 output "storage_configuration_block" {
   value = {
     s3_vectors_configuration = {
-      bucket_arn        = aws_s3_bucket.vector_store.arn
+      bucket_arn        = aws_s3vectors_vector_bucket.vector_store.vector_bucket_arn
       vector_index_name = var.vector_index_name
       dimensions        = var.vector_dimensions
       distance_metric   = var.distance_metric
@@ -20,7 +20,10 @@ output "storage_configuration_block" {
   description = "The storage configuration block for Bedrock Knowledge Base"
 }
 
-output "vector_store_id" {
-  value       = aws_s3_bucket.vector_store.id
-  description = "The vector store ID (bucket name)"
+output "vector_bucket_name" {
+  value = aws_s3vectors_vector_bucket.vector_store.vector_bucket_name
+}
+
+output "vector_store_arn" {
+  value = aws_s3vectors_vector_bucket.vector_store.vector_bucket_arn
 }

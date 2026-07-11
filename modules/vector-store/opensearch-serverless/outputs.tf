@@ -22,3 +22,8 @@ output "vector_store_id" {
   value       = aws_opensearchserverless_collection.this.id
   description = "The OpenSearch Serverless collection ID"
 }
+
+output "collection_endpoint" {
+  value       = aws_opensearchserverless_collection.this.collection_endpoint
+  description = "The endpoint URL of the OpenSearch Serverless collection"
+}
