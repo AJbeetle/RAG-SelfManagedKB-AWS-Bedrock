@@ -175,6 +175,8 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `deletion_policy` (string, default: "DELETE")
 - `tags` (map(string), default: {})
 - `chunking_strategy` (string, default: "FIXED_SIZE")
+- `parsing_strategy` (string, default: "NONE")
+- `parsing_model_arn` (string, default: null)
 - (plus all other ingestion-config inputs)
 ### Outputs
 - `data_source_id` (string)
@@ -197,6 +199,8 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `deletion_policy` (string, default: "DELETE")
 - `tags` (map(string), default: {})
 - `chunking_strategy` (string, default: "FIXED_SIZE")
+- `parsing_strategy` (string, default: "NONE")
+- `parsing_model_arn` (string, default: null)
 - (plus all other ingestion-config inputs)
 ### Outputs
 - `data_source_id` (string)

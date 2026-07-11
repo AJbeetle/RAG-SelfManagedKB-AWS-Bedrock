@@ -24,5 +24,18 @@ variable "data_source_name" {
 
 variable "chunking_strategy" {
   type        = string
+  description = "Chunking strategy (FIXED_SIZE, HIERARCHICAL, SEMANTIC, NONE)"
   default     = "FIXED_SIZE"
+}
+
+variable "parsing_strategy" {
+  type        = string
+  description = "Parsing strategy (BEDROCK_DATA_AUTOMATION, BEDROCK_FOUNDATION_MODEL, NONE)"
+  default     = "NONE"
+}
+
+variable "parsing_model_arn" {
+  type        = string
+  description = "Model ARN for BEDROCK_FOUNDATION_MODEL parsing strategy"
+  default     = null
 }

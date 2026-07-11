@@ -29,6 +29,8 @@ module "custom_data_source" {
   data_source_name  = var.data_source_name
   
   chunking_strategy = var.chunking_strategy
+  parsing_strategy  = var.parsing_strategy
+  parsing_model_arn = var.parsing_model_arn
   
   tags = {
     Environment = var.environment

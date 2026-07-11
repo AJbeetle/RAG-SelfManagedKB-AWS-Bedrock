@@ -36,6 +36,8 @@ module "s3_data_source" {
   
   
   chunking_strategy = var.chunking_strategy
+  parsing_strategy  = var.parsing_strategy
+  parsing_model_arn = var.parsing_model_arn
   
   tags = {
     Environment = var.environment
