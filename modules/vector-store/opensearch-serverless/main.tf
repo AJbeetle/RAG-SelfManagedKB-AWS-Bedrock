@@ -113,7 +113,7 @@ resource "opensearch_index" "vector_index" {
 
         method = {
           name       = "hnsw"
-          engine     = "nmslib"
+          engine     = "faiss"
           space_type = "cosinesimil"
         }
       }
