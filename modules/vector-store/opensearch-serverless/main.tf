@@ -113,7 +113,7 @@ resource "opensearch_index" "vector_index" {
 
         method = {
           name       = "hnsw"
-          engine     = "faiss"
+          engine     = "faiss" # "nmslib" not supported by AWS bedrock KB
           space_type = "cosinesimil"
         }
       }
