@@ -1,0 +1,4 @@
+aws_profile       = "default"
+region            = "us-east-1"
+state_bucket_name = "bucket-name"
+lock_table_name   = "lock-table-nmae"
