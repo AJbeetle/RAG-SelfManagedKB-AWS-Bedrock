@@ -39,3 +39,6 @@ terraform.rc
 
 # macOS specific
 .DS_Store
+
+questions.md
+config-errors.md

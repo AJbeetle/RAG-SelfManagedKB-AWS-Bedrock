@@ -71,6 +71,7 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `storage_configuration_type` (string)
 - `storage_configuration_block` (object)
 - `vector_store_id` (string)
+- `collection_endpoint` (string)
 ### Dependencies
 - None
 
@@ -88,6 +89,8 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `storage_configuration_type` (string)
 - `storage_configuration_block` (object)
 - `vector_store_id` (string)
+- `vector_bucket_name` (string)
+- `vector_store_arn` (string)
 ### Dependencies
 - None
 
@@ -108,8 +111,25 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 
 ## `knowledge-base-core`
 ### Inputs
+- `kb_name` (string)
+- `kb_description` (string, default: "Bedrock Knowledge Base")
+- `role_arn` (string)
+- `embedding_model_arn` (string)
+- `embedding_dimensions` (number, default: 1536)
+- `embedding_data_type` (string, default: "FLOAT32")
+- `storage_configuration_type` (string)
+- `storage_configuration_block` (any)
+- `enable_multimodal` (bool, default: false)
+- `multimodal_bucket_arn` (string, default: null)
+- `kms_key_arn` (string, default: null)
+- `tags` (map(string), default: {})
 ### Outputs
+- `knowledge_base_id` (string)
+- `knowledge_base_arn` (string)
+- `knowledge_base_name` (string)
 ### Dependencies
+- Phase 1 Foundation (`role_arn`)
+- Phase 2 Vector Store (`storage_configuration_type`, `storage_configuration_block`)
 
 ## `ingestion-config`
 ### Inputs
@@ -118,8 +138,16 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 
 ## `multimodal-storage`
 ### Inputs
+- `bucket_name` (string)
+- `kms_key_arn` (string, default: null)
+- `enable_versioning` (bool, default: true)
+- `tags` (map(string), default: {})
 ### Outputs
+- `bucket_arn` (string)
+- `bucket_name` (string)
+- `bucket_uri` (string)
 ### Dependencies
+- None
 
 ## `data-source/s3`
 ### Inputs

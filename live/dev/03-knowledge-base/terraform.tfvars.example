@@ -1,0 +1,13 @@
+# AWS Authentication
+aws_profile = "AJ-PHP-LZ"
+region      = "us-east-1"
+
+# Project
+environment = "dev"
+project     = "bedrock-kb"
+
+# Knowledge Base Configuration
+kb_name              = "dev-bedrock-kb"
+embedding_model_arn  = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0"
+embedding_dimensions = 1024
+enable_multimodal    = false

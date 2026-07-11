@@ -112,3 +112,41 @@ resource "aws_iam_role_policy_attachment" "lambda_invoke" {
   role       = aws_iam_role.bedrock_kb[0].name
   policy_arn = aws_iam_policy.lambda_invoke[0].arn
 }
+
+# --- Core Permissions Required by Bedrock KB ---
+data "aws_iam_policy_document" "kb_core" {
+  count = var.create_role ? 1 : 0
+  
+  # Permission to invoke the embedding model
+  statement {
+    effect = "Allow"
+    actions = [
+      "bedrock:InvokeModel",
+    ]
+    resources = [
+      "arn:aws:bedrock:*::foundation-model/*"
+    ]
+  }
+  
+  # Permission to hit the OpenSearch Serverless collection data plane
+  # (Since Foundation is deployed before OSS, we use wildcard. Bedrock requires this to validate the vector store)
+  statement {
+    effect = "Allow"
+    actions = [
+      "aoss:APIAccessAll"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "kb_core" {
+  count  = var.create_role ? 1 : 0
+  name   = "${var.role_name}-core-perms"
+  policy = data.aws_iam_policy_document.kb_core[0].json
+}
+
+resource "aws_iam_role_policy_attachment" "kb_core" {
+  count      = var.create_role ? 1 : 0
+  role       = aws_iam_role.bedrock_kb[0].name
+  policy_arn = aws_iam_policy.kb_core[0].arn
+}
