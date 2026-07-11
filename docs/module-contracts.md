@@ -133,8 +133,22 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 
 ## `ingestion-config`
 ### Inputs
+- `chunking_strategy` (string, default: "FIXED_SIZE")
+- `fixed_size_max_tokens` (number, default: 300)
+- `fixed_size_overlap_percentage` (number, default: 20)
+- `hierarchical_parent_max_tokens` (number, default: 1500)
+- `hierarchical_child_max_tokens` (number, default: 300)
+- `hierarchical_overlap_tokens` (number, default: 60)
+- `semantic_max_tokens` (number, default: 300)
+- `semantic_breakpoint_percentile_threshold` (number, default: 95)
+- `parsing_strategy` (string, default: "NONE")
+- `parsing_model_arn` (string, default: null)
+- `parsing_prompt` (string, default: null)
+- `transformation_lambda_arn` (string, default: null)
 ### Outputs
+- `vector_ingestion_configuration` (object)
 ### Dependencies
+- None
 
 ## `multimodal-storage`
 ### Inputs
@@ -151,8 +165,23 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 
 ## `data-source/s3`
 ### Inputs
+- `data_source_name` (string)
+- `data_source_description` (string, default: "S3 Data Source for Bedrock KB")
+- `knowledge_base_id` (string)
+- `s3_bucket_arn` (string)
+- `s3_inclusion_prefixes` (list(string), default: [])
+- `s3_exclusion_prefixes` (list(string), default: [])
+- `kms_key_arn` (string, default: null)
+- `deletion_policy` (string, default: "DELETE")
+- `tags` (map(string), default: {})
+- `chunking_strategy` (string, default: "FIXED_SIZE")
+- (plus all other ingestion-config inputs)
 ### Outputs
+- `data_source_id` (string)
+- `data_source_name` (string)
+- `data_source_status` (string)
 ### Dependencies
+- Phase 3 Knowledge Base (`knowledge_base_id`)
 
 ## `data-source/confluence`
 ### Inputs
@@ -161,8 +190,20 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 
 ## `data-source/custom`
 ### Inputs
+- `data_source_name` (string)
+- `data_source_description` (string, default: "Custom Data Source for Bedrock KB")
+- `knowledge_base_id` (string)
+- `kms_key_arn` (string, default: null)
+- `deletion_policy` (string, default: "DELETE")
+- `tags` (map(string), default: {})
+- `chunking_strategy` (string, default: "FIXED_SIZE")
+- (plus all other ingestion-config inputs)
 ### Outputs
+- `data_source_id` (string)
+- `data_source_name` (string)
+- `data_source_status` (string)
 ### Dependencies
+- Phase 3 Knowledge Base (`knowledge_base_id`)
 
 ## `data-source/sharepoint`
 ### Inputs

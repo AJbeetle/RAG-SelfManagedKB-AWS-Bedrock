@@ -1,0 +1,6 @@
+aws_profile       = "default"
+region            = "us-east-1"
+environment       = "dev"
+
+data_source_name  = "my-custom-api-docs"
+chunking_strategy = "FIXED_SIZE"

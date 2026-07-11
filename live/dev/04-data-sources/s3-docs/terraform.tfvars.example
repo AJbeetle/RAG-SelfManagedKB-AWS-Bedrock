@@ -1,0 +1,7 @@
+aws_profile       = "default"
+region            = "us-east-1"
+environment       = "dev"
+
+data_source_name  = "my-s3-docs"
+s3_bucket_arn     = "arn:aws:s3:::my-existing-docs-bucket"
+chunking_strategy = "FIXED_SIZE"

@@ -12,7 +12,6 @@ provider "aws" {
   profile = var.aws_profile
 }
 
-
 data "terraform_remote_state" "knowledge_base" {
   backend = "s3"
   config = {
@@ -23,17 +22,11 @@ data "terraform_remote_state" "knowledge_base" {
   }
 }
 
-
-module "s3_data_source" {
-  source = "../../../../modules/data-source/s3"
+module "custom_data_source" {
+  source = "../../../../modules/data-source/custom"
 
   knowledge_base_id = data.terraform_remote_state.knowledge_base.outputs.knowledge_base_id
   data_source_name  = var.data_source_name
-  s3_bucket_arn     = var.s3_bucket_arn
-  
-  # Add this line here!
-  s3_inclusion_prefixes = var.s3_inclusion_prefixes
-  
   
   chunking_strategy = var.chunking_strategy
   
