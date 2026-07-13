@@ -85,3 +85,14 @@ variable "transformation_lambda_arn" {
   description = "Optional Lambda ARN for custom transformation"
   default     = null
 }
+
+variable "transformation_intermediate_storage_uri" {
+  type        = string
+  description = "S3 URI used for intermediate custom transformation content"
+  default     = null
+
+  validation {
+    condition     = var.transformation_intermediate_storage_uri == null ? true : startswith(var.transformation_intermediate_storage_uri, "s3://")
+    error_message = "transformation_intermediate_storage_uri must begin with s3://."
+  }
+}

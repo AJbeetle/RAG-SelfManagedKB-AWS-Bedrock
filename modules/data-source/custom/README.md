@@ -12,4 +12,3 @@ A Custom Data Source has no connector-specific configuration (like S3 buckets or
 ## Outputs
 - `data_source_id`
 - `data_source_name`
-- `data_source_status`

@@ -1,8 +1,18 @@
 terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.54.0, < 7.0.0"
+    }
     opensearch = {
       source  = "opensearch-project/opensearch"
       version = "~> 2.2"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "~> 0.14"
     }
   }
 }
@@ -15,24 +25,27 @@ resource "aws_opensearchserverless_security_policy" "encryption" {
   name        = "${var.collection_name}-encrypt"
   type        = "encryption"
   description = "Encryption policy for ${var.collection_name}"
-  
-  policy = jsonencode({
+
+  policy = jsonencode(merge({
     Rules = [
       {
-        Resource = ["collection/${var.collection_name}"]
+        Resource     = ["collection/${var.collection_name}"]
         ResourceType = "collection"
       }
     ]
-    AWSOwnedKey = var.kms_key_arn == null ? true : false
+    }, var.kms_key_arn == null ? {
+    AWSOwnedKey = true
+    } : {
+    AWSOwnedKey = false
     KmsARN      = var.kms_key_arn
-  })
+  }))
 }
 
 resource "aws_opensearchserverless_security_policy" "network" {
   name        = "${var.collection_name}-net"
   type        = "network"
   description = "Network policy for ${var.collection_name}"
-  
+
   policy = jsonencode([
     {
       Description = "Public access for Bedrock"
@@ -57,7 +70,7 @@ resource "aws_opensearchserverless_access_policy" "data_access" {
   name        = "${var.collection_name}-access"
   type        = "data"
   description = "Data access policy for ${var.collection_name}"
-  
+
   policy = jsonencode([
     {
       Description = "Access for Bedrock KB Role and Terraform Caller"
@@ -86,7 +99,7 @@ resource "aws_opensearchserverless_collection" "this" {
   description      = var.collection_description
   type             = "VECTORSEARCH"
   standby_replicas = local.standby_replicas
-  
+
   tags = var.tags
 
   depends_on = [

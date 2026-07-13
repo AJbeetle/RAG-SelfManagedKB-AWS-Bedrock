@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.54.0, < 7.0.0"
+    }
+  }
+}
+
 data "aws_iam_policy_document" "bedrock_trust" {
   count = var.create_role ? 1 : 0
   statement {
@@ -19,15 +30,17 @@ resource "aws_iam_role" "bedrock_kb" {
 
 data "aws_iam_policy_document" "s3_access" {
   count = var.create_role && length(var.s3_data_bucket_arns) > 0 ? 1 : 0
+
   statement {
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket"
-    ]
-    resources = flatten([
-      for arn in var.s3_data_bucket_arns : [arn, "${arn}/*"]
-    ])
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = var.s3_data_bucket_arns
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = [for arn in var.s3_data_bucket_arns : "${arn}/*"]
   }
 }
 
@@ -72,6 +85,7 @@ data "aws_iam_policy_document" "kms" {
     effect = "Allow"
     actions = [
       "kms:Decrypt",
+      "kms:DescribeKey",
       "kms:GenerateDataKey"
     ]
     resources = var.kms_key_arns
@@ -116,7 +130,7 @@ resource "aws_iam_role_policy_attachment" "lambda_invoke" {
 # --- Core Permissions Required by Bedrock KB ---
 data "aws_iam_policy_document" "kb_core" {
   count = var.create_role ? 1 : 0
-  
+
   # Permission to invoke the embedding model
   statement {
     effect = "Allow"
@@ -127,7 +141,7 @@ data "aws_iam_policy_document" "kb_core" {
       "arn:aws:bedrock:*::foundation-model/*"
     ]
   }
-  
+
   # Permission to hit the OpenSearch Serverless collection data plane
   # (Since Foundation is deployed before OSS, we use wildcard. Bedrock requires this to validate the vector store)
   statement {

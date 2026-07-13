@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+}
+
 locals {
   vector_ingestion_configuration = {
     chunking_configuration = var.chunking_strategy != "NONE" ? {
@@ -21,9 +25,9 @@ locals {
       } : null
 
       semantic_chunking_configuration = var.chunking_strategy == "SEMANTIC" ? {
-        max_token                      = var.semantic_max_tokens
+        max_token                       = var.semantic_max_tokens
         breakpoint_percentile_threshold = var.semantic_breakpoint_percentile_threshold
-        buffer_size                    = var.semantic_buffer_size
+        buffer_size                     = var.semantic_buffer_size
       } : null
     } : null
 
@@ -41,7 +45,7 @@ locals {
     custom_transformation_configuration = var.transformation_lambda_arn != null ? {
       intermediate_storage = {
         s3_location = {
-          uri = "s3://placeholder-handled-by-data-source" 
+          uri = var.transformation_intermediate_storage_uri
         }
       }
       transformation = [

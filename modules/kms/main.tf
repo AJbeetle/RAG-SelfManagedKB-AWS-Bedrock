@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.54.0, < 7.0.0"
+    }
+  }
+}
+
 # Data Source Key
 resource "aws_kms_key" "data_source" {
   count                   = var.enable_data_source_key ? 1 : 0

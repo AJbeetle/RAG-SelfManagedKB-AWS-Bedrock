@@ -1,19 +1,24 @@
-variable "aws_profile" {
-  type        = string
-  description = "AWS CLI profile to use"
-  default     = "default"
-}
-
 variable "region" {
   type        = string
   description = "AWS region"
   default     = "us-east-1"
 }
 
-variable "environment" {
+variable "state_bucket_name" {
   type        = string
-  description = "Environment name"
-  default     = "dev"
+  description = "S3 bucket containing the knowledge-base Terraform state"
+}
+
+variable "state_region" {
+  type        = string
+  description = "AWS region containing the Terraform state bucket"
+  default     = "us-east-1"
+}
+
+variable "state_key_prefix" {
+  type        = string
+  description = "Key prefix shared by the staged Terraform states"
+  default     = "live/dev"
 }
 
 variable "s3_bucket_arn" {

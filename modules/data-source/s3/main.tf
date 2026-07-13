@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.54.0, < 7.0.0"
+    }
+  }
+}
+
 module "ingestion_config" {
   source = "../../ingestion-config"
 
@@ -9,12 +20,13 @@ module "ingestion_config" {
   hierarchical_overlap_tokens              = var.hierarchical_overlap_tokens
   semantic_max_tokens                      = var.semantic_max_tokens
   semantic_breakpoint_percentile_threshold = var.semantic_breakpoint_percentile_threshold
-  
-  parsing_strategy                         = var.parsing_strategy
-  parsing_model_arn                        = var.parsing_model_arn
-  parsing_prompt                           = var.parsing_prompt
-  
-  transformation_lambda_arn                = var.transformation_lambda_arn
+
+  parsing_strategy  = var.parsing_strategy
+  parsing_model_arn = var.parsing_model_arn
+  parsing_prompt    = var.parsing_prompt
+
+  transformation_lambda_arn               = var.transformation_lambda_arn
+  transformation_intermediate_storage_uri = var.transformation_intermediate_storage_uri
 }
 
 resource "aws_bedrockagent_data_source" "this" {
@@ -31,6 +43,13 @@ resource "aws_bedrockagent_data_source" "this" {
     }
   }
 
+  dynamic "server_side_encryption_configuration" {
+    for_each = var.kms_key_arn != null ? [var.kms_key_arn] : []
+    content {
+      kms_key_arn = server_side_encryption_configuration.value
+    }
+  }
+
   dynamic "vector_ingestion_configuration" {
     for_each = module.ingestion_config.vector_ingestion_configuration != null ? [module.ingestion_config.vector_ingestion_configuration] : []
     content {
@@ -38,7 +57,7 @@ resource "aws_bedrockagent_data_source" "this" {
         for_each = vector_ingestion_configuration.value.chunking_configuration != null ? [vector_ingestion_configuration.value.chunking_configuration] : []
         content {
           chunking_strategy = chunking_configuration.value.chunking_strategy
-          
+
           dynamic "fixed_size_chunking_configuration" {
             for_each = chunking_configuration.value.fixed_size_chunking_configuration != null ? [chunking_configuration.value.fixed_size_chunking_configuration] : []
             content {
@@ -46,7 +65,7 @@ resource "aws_bedrockagent_data_source" "this" {
               overlap_percentage = fixed_size_chunking_configuration.value.overlap_percentage
             }
           }
-          
+
           dynamic "hierarchical_chunking_configuration" {
             for_each = chunking_configuration.value.hierarchical_chunking_configuration != null ? [chunking_configuration.value.hierarchical_chunking_configuration] : []
             content {
@@ -59,18 +78,18 @@ resource "aws_bedrockagent_data_source" "this" {
               }
             }
           }
-          
+
           dynamic "semantic_chunking_configuration" {
             for_each = chunking_configuration.value.semantic_chunking_configuration != null ? [chunking_configuration.value.semantic_chunking_configuration] : []
             content {
-              max_token                      = semantic_chunking_configuration.value.max_token
+              max_token                       = semantic_chunking_configuration.value.max_token
               breakpoint_percentile_threshold = semantic_chunking_configuration.value.breakpoint_percentile_threshold
-              buffer_size                    = semantic_chunking_configuration.value.buffer_size
+              buffer_size                     = semantic_chunking_configuration.value.buffer_size
             }
           }
         }
       }
-      
+
       dynamic "parsing_configuration" {
         for_each = vector_ingestion_configuration.value.parsing_configuration != null ? [vector_ingestion_configuration.value.parsing_configuration] : []
         content {
@@ -89,7 +108,7 @@ resource "aws_bedrockagent_data_source" "this" {
           }
         }
       }
-      
+
       dynamic "custom_transformation_configuration" {
         for_each = vector_ingestion_configuration.value.custom_transformation_configuration != null ? [vector_ingestion_configuration.value.custom_transformation_configuration] : []
         content {
@@ -123,6 +142,13 @@ resource "aws_bedrockagent_data_source" "this" {
           }
         }
       }
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = (var.transformation_lambda_arn == null) == (var.transformation_intermediate_storage_uri == null)
+      error_message = "transformation_lambda_arn and transformation_intermediate_storage_uri must be provided together."
     }
   }
 }

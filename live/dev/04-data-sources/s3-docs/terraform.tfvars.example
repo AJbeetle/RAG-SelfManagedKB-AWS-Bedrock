@@ -1,6 +1,7 @@
-aws_profile       = "default"
 region            = "us-east-1"
-environment       = "dev"
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
 
 data_source_name  = "my-s3-docs"
 s3_bucket_arn     = "arn:aws:s3:::my-existing-docs-bucket"

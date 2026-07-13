@@ -1,16 +1,15 @@
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.5.0, < 2.0.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 6.54.0"
+      version = ">= 6.54.0, < 7.0.0"
     }
   }
 }
 
 provider "aws" {
-  region  = var.region
-  profile = var.aws_profile
+  region = var.region
 }
 
 locals {
@@ -57,13 +56,13 @@ module "iam_runtime_role" {
 module "logging" {
   source = "../../../modules/logging"
 
-  enable_cloudwatch_logging    = var.enable_cloudwatch_logging
-  enable_s3_logging            = var.enable_s3_logging
-  enable_firehose_logging      = var.enable_firehose_logging
-  
+  enable_cloudwatch_logging = var.enable_cloudwatch_logging
+  enable_s3_logging         = var.enable_s3_logging
+  enable_firehose_logging   = var.enable_firehose_logging
+
   log_group_name       = "/bedrock/kb/${local.name_prefix}"
   s3_bucket_name       = "${local.name_prefix}-logs"
   firehose_stream_name = "${local.name_prefix}-firehose"
-  
+
   tags = local.tags
 }

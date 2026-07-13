@@ -1,12 +1,24 @@
-variable "aws_profile" {
-  type        = string
-  description = "The local AWS CLI profile to use for authentication"
-}
-
 variable "region" {
   type        = string
   description = "AWS region"
   default     = "us-east-1"
+}
+
+variable "state_bucket_name" {
+  type        = string
+  description = "S3 bucket containing the foundation Terraform state"
+}
+
+variable "state_region" {
+  type        = string
+  description = "AWS region containing the Terraform state bucket"
+  default     = "us-east-1"
+}
+
+variable "state_key_prefix" {
+  type        = string
+  description = "Key prefix shared by the staged Terraform states"
+  default     = "live/dev"
 }
 
 variable "environment" {
@@ -23,6 +35,11 @@ variable "vector_store_type" {
   type        = string
   description = "Which vector store module to use (opensearch-serverless, s3-vectors)"
   default     = "opensearch-serverless"
+
+  validation {
+    condition     = contains(["opensearch-serverless", "s3-vectors"], var.vector_store_type)
+    error_message = "vector_store_type must be opensearch-serverless or s3-vectors."
+  }
 }
 
 variable "enable_standby_replicas" {

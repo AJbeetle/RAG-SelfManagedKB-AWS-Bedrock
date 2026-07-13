@@ -1,0 +1,14 @@
+region      = "us-east-1"
+environment = "dev"
+project     = "bedrock-kb"
+
+s3_data_bucket_arns = ["arn:aws:s3:::replace-with-document-bucket"]
+
+enable_data_source_key        = true
+enable_transient_storage_key  = false
+enable_multimodal_storage_key = false
+enable_vector_store_key       = true
+
+enable_cloudwatch_logging = false
+enable_s3_logging         = false
+enable_firehose_logging   = false

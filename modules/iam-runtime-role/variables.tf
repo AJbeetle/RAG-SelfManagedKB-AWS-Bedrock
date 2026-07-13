@@ -17,8 +17,15 @@ variable "role_name" {
 
 variable "s3_data_bucket_arns" {
   type        = list(string)
-  description = "List of S3 bucket ARNs to grant read access to"
+  description = "List of S3 bucket ARNs, without object suffixes, to grant read access to"
   default     = []
+
+  validation {
+    condition = alltrue([
+      for arn in var.s3_data_bucket_arns : can(regex("^arn:[^:]+:s3:::[^/]+$", arn))
+    ])
+    error_message = "s3_data_bucket_arns must contain bucket ARNs without /* object suffixes."
+  }
 }
 
 variable "enable_secrets_manager" {

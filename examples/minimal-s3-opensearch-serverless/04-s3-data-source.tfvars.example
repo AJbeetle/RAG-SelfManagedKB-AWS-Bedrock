@@ -1,0 +1,10 @@
+region = "us-east-1"
+
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
+
+data_source_name      = "dev-s3-documents"
+s3_bucket_arn         = "arn:aws:s3:::replace-with-document-bucket"
+s3_inclusion_prefixes = ["documents/"]
+chunking_strategy     = "FIXED_SIZE"

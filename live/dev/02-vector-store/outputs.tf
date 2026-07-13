@@ -13,6 +13,11 @@ output "storage_configuration_block" {
 }
 
 output "vector_store_id" {
-  value       = try(module.opensearch_serverless[0].vector_store_id, module.s3_vectors[0].vector_store_arn, null)
+  value       = local.selected_module_type.vector_store_id
   description = "The vector store ID"
+}
+
+output "vector_dimensions" {
+  value       = var.vector_dimensions
+  description = "Vector dimensions configured on the selected index"
 }

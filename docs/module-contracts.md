@@ -7,7 +7,7 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `create_role` (bool, default: true)
 - `existing_role_arn` (string, default: "")
 - `role_name` (string)
-- `s3_data_bucket_arns` (list(string), default: [])
+- `s3_data_bucket_arns` (list(string), default: []; bucket ARNs only, without `/*`)
 - `enable_secrets_manager` (bool, default: false)
 - `enable_kms_policy` (bool, default: false)
 - `kms_key_arns` (list(string), default: [])
@@ -91,23 +91,9 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `vector_store_id` (string)
 - `vector_bucket_name` (string)
 - `vector_store_arn` (string)
+- `vector_index_arn` (string)
 ### Dependencies
 - None
-
-## `vector-store/aurora-postgresql-serverless`
-### Inputs
-### Outputs
-### Dependencies
-
-## `vector-store/neptune-analytics`
-### Inputs
-### Outputs
-### Dependencies
-
-## `vector-store/external-connection`
-### Inputs
-### Outputs
-### Dependencies
 
 ## `knowledge-base-core`
 ### Inputs
@@ -118,10 +104,9 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `embedding_dimensions` (number, default: 1536)
 - `embedding_data_type` (string, default: "FLOAT32")
 - `storage_configuration_type` (string)
-- `storage_configuration_block` (any)
+- `storage_configuration_block` (typed object containing either OpenSearch Serverless or S3 Vectors configuration)
 - `enable_multimodal` (bool, default: false)
-- `multimodal_bucket_arn` (string, default: null)
-- `kms_key_arn` (string, default: null)
+- `multimodal_bucket_uri` (string, default: null)
 - `tags` (map(string), default: {})
 ### Outputs
 - `knowledge_base_id` (string)
@@ -145,6 +130,7 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `parsing_model_arn` (string, default: null)
 - `parsing_prompt` (string, default: null)
 - `transformation_lambda_arn` (string, default: null)
+- `transformation_intermediate_storage_uri` (string, default: null; required with a transformation Lambda)
 ### Outputs
 - `vector_ingestion_configuration` (object)
 ### Dependencies
@@ -170,25 +156,18 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `knowledge_base_id` (string)
 - `s3_bucket_arn` (string)
 - `s3_inclusion_prefixes` (list(string), default: [])
-- `s3_exclusion_prefixes` (list(string), default: [])
 - `kms_key_arn` (string, default: null)
 - `deletion_policy` (string, default: "DELETE")
-- `tags` (map(string), default: {})
 - `chunking_strategy` (string, default: "FIXED_SIZE")
 - `parsing_strategy` (string, default: "NONE")
 - `parsing_model_arn` (string, default: null)
+- `transformation_intermediate_storage_uri` (string, default: null)
 - (plus all other ingestion-config inputs)
 ### Outputs
 - `data_source_id` (string)
 - `data_source_name` (string)
-- `data_source_status` (string)
 ### Dependencies
 - Phase 3 Knowledge Base (`knowledge_base_id`)
-
-## `data-source/confluence`
-### Inputs
-### Outputs
-### Dependencies
 
 ## `data-source/custom`
 ### Inputs
@@ -197,29 +176,13 @@ This document outlines the inputs, outputs, and dependencies for each module in 
 - `knowledge_base_id` (string)
 - `kms_key_arn` (string, default: null)
 - `deletion_policy` (string, default: "DELETE")
-- `tags` (map(string), default: {})
 - `chunking_strategy` (string, default: "FIXED_SIZE")
 - `parsing_strategy` (string, default: "NONE")
 - `parsing_model_arn` (string, default: null)
+- `transformation_intermediate_storage_uri` (string, default: null)
 - (plus all other ingestion-config inputs)
 ### Outputs
 - `data_source_id` (string)
 - `data_source_name` (string)
-- `data_source_status` (string)
 ### Dependencies
 - Phase 3 Knowledge Base (`knowledge_base_id`)
-
-## `data-source/sharepoint`
-### Inputs
-### Outputs
-### Dependencies
-
-## `data-source/salesforce`
-### Inputs
-### Outputs
-### Dependencies
-
-## `data-source/web-crawler`
-### Inputs
-### Outputs
-### Dependencies

@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.54.0, < 7.0.0"
+    }
+  }
+}
+
 # CloudWatch
 resource "aws_cloudwatch_log_group" "kb_logs" {
   count             = var.enable_cloudwatch_logging ? 1 : 0

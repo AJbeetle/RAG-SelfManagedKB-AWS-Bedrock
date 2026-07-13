@@ -26,12 +26,6 @@ variable "deletion_policy" {
   default     = "DELETE"
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "Tags to apply"
-  default     = {}
-}
-
 # Ingestion config variables
 variable "chunking_strategy" {
   type    = string
@@ -80,4 +74,10 @@ variable "parsing_prompt" {
 variable "transformation_lambda_arn" {
   type    = string
   default = null
+}
+
+variable "transformation_intermediate_storage_uri" {
+  type        = string
+  description = "S3 URI used for intermediate custom transformation content"
+  default     = null
 }

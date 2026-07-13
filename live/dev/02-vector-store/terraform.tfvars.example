@@ -1,6 +1,10 @@
-# AWS Authentication
-aws_profile = "AJ-PHP-LZ"
-region      = "us-east-1"
+# AWS region. Authentication is supplied through the standard AWS credential chain.
+region = "us-east-1"
+
+# Remote state created by bootstrap/backend-bootstrap.
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
 
 # Project
 environment = "dev"

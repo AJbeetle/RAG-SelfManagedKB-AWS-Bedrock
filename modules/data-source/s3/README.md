@@ -15,4 +15,3 @@ This module provisions an `aws_bedrockagent_data_source` of type `S3`. It uses t
 ## Outputs
 - `data_source_id`
 - `data_source_name`
-- `data_source_status`

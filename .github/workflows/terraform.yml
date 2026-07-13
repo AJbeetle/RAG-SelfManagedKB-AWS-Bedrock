@@ -1,0 +1,43 @@
+name: Terraform artifact
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TF_IN_AUTOMATION: "true"
+
+jobs:
+  verify-and-package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.1
+          terraform_wrapper: false
+
+      - name: Install TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: v0.60.0
+
+      - name: Verify and package
+        run: make package
+
+      - name: Upload accelerator artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: bedrock-self-managed-kb-accelerator
+          path: dist/*
+          if-no-files-found: error

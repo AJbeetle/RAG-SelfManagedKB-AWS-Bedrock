@@ -1,6 +1,5 @@
-# AWS Authentication
-aws_profile = "AJ"
-region      = "us-east-1"
+# AWS region. Authentication is supplied through the standard AWS credential chain.
+region = "us-east-1"
 
 # Project
 environment = "dev"
@@ -8,7 +7,7 @@ project     = "kb-test"
 
 # IAM
 create_role                = true
-s3_data_bucket_arns        = ["arn:aws:s3:::your-data-bucket-name/*"]
+s3_data_bucket_arns        = ["arn:aws:s3:::your-data-bucket-name"]
 enable_secrets_manager     = false
 transformation_lambda_arns = []
 

@@ -17,17 +17,16 @@ variable "knowledge_base_id" {
 variable "s3_bucket_arn" {
   type        = string
   description = "ARN of the S3 bucket containing the documents"
+
+  validation {
+    condition     = can(regex("^arn:[^:]+:s3:::[^/]+$", var.s3_bucket_arn))
+    error_message = "s3_bucket_arn must be a bucket ARN without an object suffix."
+  }
 }
 
 variable "s3_inclusion_prefixes" {
   type        = list(string)
   description = "List of prefixes to include"
-  default     = []
-}
-
-variable "s3_exclusion_prefixes" {
-  type        = list(string)
-  description = "List of prefixes to exclude"
   default     = []
 }
 
@@ -41,12 +40,6 @@ variable "deletion_policy" {
   type        = string
   description = "Data deletion policy: DELETE or RETAIN"
   default     = "DELETE"
-}
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags to apply"
-  default     = {}
 }
 
 # Ingestion config variables
@@ -97,4 +90,10 @@ variable "parsing_prompt" {
 variable "transformation_lambda_arn" {
   type    = string
   default = null
+}
+
+variable "transformation_intermediate_storage_uri" {
+  type        = string
+  description = "S3 URI used for intermediate custom transformation content"
+  default     = null
 }

@@ -1,8 +1,3 @@
-variable "aws_profile" {
-  type        = string
-  description = "The local AWS CLI profile to use for authentication"
-}
-
 variable "region" {
   type        = string
   description = "AWS region"

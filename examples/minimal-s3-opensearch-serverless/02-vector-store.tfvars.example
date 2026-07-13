@@ -1,0 +1,12 @@
+region      = "us-east-1"
+environment = "dev"
+project     = "bedrock-kb"
+
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
+
+vector_store_type       = "opensearch-serverless"
+enable_standby_replicas = false
+vector_index_name       = "bedrock-index"
+vector_dimensions       = 1024

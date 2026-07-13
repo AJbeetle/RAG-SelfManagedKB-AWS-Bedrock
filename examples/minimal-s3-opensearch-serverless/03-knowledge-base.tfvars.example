@@ -1,0 +1,12 @@
+region      = "us-east-1"
+environment = "dev"
+project     = "bedrock-kb"
+
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
+
+kb_name              = "dev-bedrock-kb"
+embedding_model_arn  = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0"
+embedding_dimensions = 1024
+enable_multimodal    = false

@@ -1,3 +1,14 @@
+terraform {
+  required_version = ">= 1.5.0, < 2.0.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.54.0, < 7.0.0"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "multimodal" {
   bucket = var.bucket_name
   tags   = var.tags

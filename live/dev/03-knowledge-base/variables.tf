@@ -1,12 +1,24 @@
-variable "aws_profile" {
-  type        = string
-  description = "The local AWS CLI profile to use for authentication"
-}
-
 variable "region" {
   type        = string
   description = "AWS region"
   default     = "us-east-1"
+}
+
+variable "state_bucket_name" {
+  type        = string
+  description = "S3 bucket containing the foundation and vector-store Terraform states"
+}
+
+variable "state_region" {
+  type        = string
+  description = "AWS region containing the Terraform state bucket"
+  default     = "us-east-1"
+}
+
+variable "state_key_prefix" {
+  type        = string
+  description = "Key prefix shared by the staged Terraform states"
+  default     = "live/dev"
 }
 
 variable "environment" {
