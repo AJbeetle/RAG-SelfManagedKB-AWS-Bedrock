@@ -9,12 +9,73 @@ terraform {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
+data "aws_iam_policy_document" "bedrock_key_policy" {
+  statement {
+    sid    = "Enable IAM User Permissions"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowBedrock"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["bedrock.amazonaws.com"]
+    }
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:CreateGrant"
+    ]
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "vector_store_key_policy" {
+  statement {
+    sid    = "Enable IAM User Permissions"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowBedrockAndVectorStores"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["bedrock.amazonaws.com", "indexing.s3vectors.amazonaws.com", "aoss.amazonaws.com"]
+    }
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:CreateGrant"
+    ]
+    resources = ["*"]
+  }
+}
+
 # Data Source Key
 resource "aws_kms_key" "data_source" {
   count                   = var.enable_data_source_key ? 1 : 0
   description             = "Encrypts data source content for Bedrock KB"
   deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.bedrock_key_policy.json
   tags                    = var.tags
 }
 
@@ -30,6 +91,7 @@ resource "aws_kms_key" "transient_storage" {
   description             = "Encrypts transient storage content for Bedrock KB"
   deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.bedrock_key_policy.json
   tags                    = var.tags
 }
 
@@ -45,6 +107,7 @@ resource "aws_kms_key" "multimodal_storage" {
   description             = "Encrypts multimodal storage content for Bedrock KB"
   deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.bedrock_key_policy.json
   tags                    = var.tags
 }
 
@@ -60,6 +123,7 @@ resource "aws_kms_key" "vector_store" {
   description             = "Encrypts vector store content for Bedrock KB"
   deletion_window_in_days = var.deletion_window_in_days
   enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.vector_store_key_policy.json
   tags                    = var.tags
 }
 
