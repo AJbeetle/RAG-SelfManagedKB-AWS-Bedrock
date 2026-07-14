@@ -40,8 +40,8 @@ locals {
 
   role_arn                       = data.terraform_remote_state.foundation.outputs.role_arn
   role_name                      = element(reverse(split("/", local.role_arn)), 0)
-  multimodal_storage_kms_key_arn = data.terraform_remote_state.foundation.outputs.multimodal_storage_kms_key_arn
-  data_source_kms_key_arn        = data.terraform_remote_state.foundation.outputs.data_source_kms_key_arn
+  multimodal_storage_kms_key_arn = try(data.terraform_remote_state.foundation.outputs.multimodal_storage_kms_key_arn, null)
+  data_source_kms_key_arn        = try(data.terraform_remote_state.foundation.outputs.data_source_kms_key_arn, null)
 
   storage_type  = data.terraform_remote_state.vector_store.outputs.storage_configuration_type
   storage_block = data.terraform_remote_state.vector_store.outputs.storage_configuration_block
