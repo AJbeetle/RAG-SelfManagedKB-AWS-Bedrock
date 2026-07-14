@@ -26,19 +26,24 @@ resource "aws_opensearchserverless_security_policy" "encryption" {
   type        = "encryption"
   description = "Encryption policy for ${var.collection_name}"
 
-  policy = jsonencode(merge({
+  policy = var.kms_key_arn == null ? jsonencode({
     Rules = [
       {
         Resource     = ["collection/${var.collection_name}"]
         ResourceType = "collection"
       }
     ]
-    }, var.kms_key_arn == null ? {
     AWSOwnedKey = true
-    } : {
+    }) : jsonencode({
+    Rules = [
+      {
+        Resource     = ["collection/${var.collection_name}"]
+        ResourceType = "collection"
+      }
+    ]
     AWSOwnedKey = false
     KmsARN      = var.kms_key_arn
-  }))
+  })
 }
 
 resource "aws_opensearchserverless_security_policy" "network" {
