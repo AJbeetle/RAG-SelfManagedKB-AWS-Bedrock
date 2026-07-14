@@ -8,7 +8,7 @@ terraform {
     }
     opensearch = {
       source  = "opensearch-project/opensearch"
-      version = "~> 2.2"
+      version = ">= 2.3.0, < 3.0.0"
     }
     time = {
       source  = "hashicorp/time"

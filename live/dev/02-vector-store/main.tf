@@ -18,10 +18,10 @@ provider "aws" {
 
 provider "opensearch" {
   url = var.vector_store_type == "opensearch-serverless" ? module.opensearch_serverless[0].collection_endpoint : "https://dummy.${var.region}.aoss.amazonaws.com"
-  # Authentication is handled automatically via AWS credentials from environment/profile if healthcheck is configured
+  # Authentication is handled via the ambient AWS credential chain
   healthcheck = false
-  # SigV4 is required for AOSS
-  # aws_signature_version = "v4"
+  
+  # AWS SigV4 authentication is required for OpenSearch Serverless
   sign_aws_requests = true
   aws_region        = var.region
 }
