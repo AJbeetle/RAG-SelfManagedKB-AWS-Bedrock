@@ -49,3 +49,5 @@ config-errors.md
 
 # Generated release artifacts
 dist/
+
+CFT/
