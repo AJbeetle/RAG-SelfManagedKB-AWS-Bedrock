@@ -20,7 +20,7 @@ provider "opensearch" {
   url = var.vector_store_type == "opensearch-serverless" ? module.opensearch_serverless[0].collection_endpoint : "https://dummy.${var.region}.aoss.amazonaws.com"
   # Authentication is handled via the ambient AWS credential chain
   healthcheck = false
-  
+
   # AWS SigV4 authentication is required for OpenSearch Serverless
   sign_aws_requests = true
   aws_region        = var.region
@@ -57,12 +57,14 @@ module "opensearch_serverless" {
     opensearch = opensearch
   }
 
-  collection_name         = "${local.name_prefix}-oss"
+  collection_name         = "${local.name_prefix}-${var.collection_name}-oss"
   enable_standby_replicas = var.enable_standby_replicas
   kms_key_arn             = local.kms_key_arn != "" ? local.kms_key_arn : null
   role_arn                = local.role_arn
   vector_index_name       = var.vector_index_name
   vector_dimensions       = var.vector_dimensions
+  metadata_field_name     = var.metadata_field_name
+  text_field_name         = var.text_field_name
 
   tags = local.tags
 }
@@ -71,10 +73,12 @@ module "s3_vectors" {
   source = "../../../modules/vector-store/s3-vectors"
   count  = var.vector_store_type == "s3-vectors" ? 1 : 0
 
-  bucket_name       = "${local.name_prefix}-s3v"
-  kms_key_arn       = local.kms_key_arn != "" ? local.kms_key_arn : null
-  vector_index_name = var.vector_index_name
-  vector_dimensions = var.vector_dimensions
+  bucket_name         = "${local.name_prefix}-${var.collection_name}-s3v"
+  kms_key_arn         = local.kms_key_arn != "" ? local.kms_key_arn : null
+  vector_index_name   = var.vector_index_name
+  vector_dimensions   = var.vector_dimensions
+  metadata_field_name = var.metadata_field_name
+  text_field_name     = var.text_field_name
 
   tags = local.tags
 }

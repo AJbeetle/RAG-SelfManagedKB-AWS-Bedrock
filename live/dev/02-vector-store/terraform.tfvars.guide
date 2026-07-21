@@ -1,0 +1,23 @@
+# AWS region. Authentication is supplied through the standard AWS credential chain.
+region = "us-east-1"
+
+# Remote state created by bootstrap/backend-bootstrap.
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
+
+# Project
+environment = "dev"
+project     = "bedrock-kb"
+
+# Vector Store Selection
+vector_store_type       = "opensearch-serverless" # or "s3-vectors"
+enable_standby_replicas = false     # by default it is false
+vector_index_name       = "bedrock-index"
+vector_dimensions       = 1024      # by default it is 1024
+collection_name         = "my-vector-store" # Unique identifier appended to the collection/bucket name
+
+# for S3-vectors or Opensearch : These are the unfiltered keys we need to add in vector Index, so that its metadata storage limit is not exceeded for filterable data
+# If not defined as unfiltered key then for filtering data, storage space will be exceeded.
+metadata_field_name     = "AMAZON_BEDROCK_METADATA"  # by default we have set it to "AMAZON_BEDROCK_METADATA"
+text_field_name         = "AMAZON_BEDROCK_TEXT"      # by default we have set it to "AMAZON_BEDROCK_TEXT"

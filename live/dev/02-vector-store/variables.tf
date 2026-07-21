@@ -59,3 +59,22 @@ variable "vector_dimensions" {
   description = "Dimensions of the vector index"
   default     = 1024
 }
+
+variable "collection_name" {
+  type        = string
+  description = "Unique identifier for the vector store collection"
+}
+
+# For S3 vectors and opensearch
+
+variable "metadata_field_name" {
+  type        = string
+  description = "Name of the field mapping to the metadata"
+  default     = "AMAZON_BEDROCK_METADATA" # default metadata field name that needs to be put in unfiltered key in s3 or opensearch vector index
+}
+
+variable "text_field_name" {
+  type        = string
+  description = "Name of the field mapping to the text"
+  default     = "AMAZON_BEDROCK_TEXT" # default text field  name - to be put in unfiltered key in s3 or opensearch vector index
+}
