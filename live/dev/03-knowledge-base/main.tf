@@ -51,7 +51,7 @@ module "multimodal_storage" {
   source = "../../../modules/multimodal-storage"
   count  = var.enable_multimodal ? 1 : 0
 
-  bucket_name       = "${local.name_prefix}-multimodal"
+  bucket_name       = "${local.name_prefix}-${var.multimodal_storage_bucket_name}"
   kms_key_arn       = local.multimodal_storage_kms_key_arn
   enable_versioning = true
 
@@ -101,9 +101,11 @@ module "knowledge_base" {
   source = "../../../modules/knowledge-base-core"
 
   kb_name              = var.kb_name
+  kb_description       = var.kb_description
   role_arn             = local.role_arn
   embedding_model_arn  = var.embedding_model_arn
   embedding_dimensions = var.embedding_dimensions
+  embedding_data_type  = var.embedding_data_type
 
   storage_configuration_type  = local.storage_type
   storage_configuration_block = local.storage_block

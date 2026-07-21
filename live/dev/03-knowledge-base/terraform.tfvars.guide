@@ -12,6 +12,9 @@ project     = "bedrock-kb"
 
 # Knowledge Base Configuration
 kb_name              = "dev-bedrock-kb"
+# kb_description      = "My custom knowledge base description"  # optional
 embedding_model_arn  = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-text-v2:0"
 embedding_dimensions = 1024
+# embedding_data_type = "FLOAT32" # or "BINARY" - optional [default -> FLOAT32]
 enable_multimodal    = false
+# multimodal_storage_bucket_name = "multimodal" # optional - Name for multimodal S3 bucket (used if enable_multimodal is true)

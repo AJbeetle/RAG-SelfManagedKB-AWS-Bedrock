@@ -52,3 +52,22 @@ variable "enable_multimodal" {
   description = "Enable supplemental data storage for multimodal extraction"
   default     = false
 }
+
+variable "multimodal_storage_bucket_name" {
+  type        = string
+  description = "Name for the multimodal storage S3 bucket (used if enable_multimodal is true)"
+  default     = "multimodal"
+}
+
+variable "kb_description" {
+  type        = string
+  description = "Description of the Knowledge Base"
+  default     = "Bedrock Knowledge Base"
+}
+
+
+variable "embedding_data_type" {
+  type        = string
+  description = "Data type of the vectors (FLOAT32 or BINARY)"
+  default     = "FLOAT32"
+}
