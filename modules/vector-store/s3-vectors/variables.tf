@@ -24,13 +24,13 @@ variable "distance_metric" {
 variable "metadata_field_name" {
   type        = string
   description = "Name of the field mapping to the metadata"
-  default     = "metadata"
+  default     = "AMAZON_BEDROCK_METADATA"
 }
 
 variable "text_field_name" {
   type        = string
   description = "Name of the field mapping to the text"
-  default     = "text"
+  default     = "AMAZON_BEDROCK_TEXT"
 }
 
 variable "kms_key_arn" {
