@@ -44,3 +44,45 @@ variable "parsing_model_arn" {
   description = "Model ARN for BEDROCK_FOUNDATION_MODEL parsing strategy"
   default     = null
 }
+
+variable "parsing_prompt" {
+  type        = string
+  description = "Instructions for the foundation model parsing strategy"
+  default     = null
+}
+
+variable "deletion_policy" {
+  type        = string
+  description = "Data deletion policy: DELETE or RETAIN"
+  default     = "DELETE"
+}
+
+# Chunking Configuration
+variable "fixed_size_max_tokens" {
+  type    = number
+  default = 300
+}
+variable "fixed_size_overlap_percentage" {
+  type    = number
+  default = 20
+}
+variable "hierarchical_parent_max_tokens" {
+  type    = number
+  default = 1500
+}
+variable "hierarchical_child_max_tokens" {
+  type    = number
+  default = 300
+}
+variable "hierarchical_overlap_tokens" {
+  type    = number
+  default = 60
+}
+variable "semantic_max_tokens" {
+  type    = number
+  default = 300
+}
+variable "semantic_breakpoint_percentile_threshold" {
+  type    = number
+  default = 95
+}

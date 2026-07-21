@@ -32,4 +32,14 @@ module "custom_data_source" {
   chunking_strategy = var.chunking_strategy
   parsing_strategy  = var.parsing_strategy
   parsing_model_arn = var.parsing_model_arn
+  parsing_prompt    = var.parsing_prompt
+  deletion_policy   = var.deletion_policy
+
+  fixed_size_max_tokens                    = var.fixed_size_max_tokens
+  fixed_size_overlap_percentage            = var.fixed_size_overlap_percentage
+  hierarchical_parent_max_tokens           = var.hierarchical_parent_max_tokens
+  hierarchical_child_max_tokens            = var.hierarchical_child_max_tokens
+  hierarchical_overlap_tokens              = var.hierarchical_overlap_tokens
+  semantic_max_tokens                      = var.semantic_max_tokens
+  semantic_breakpoint_percentile_threshold = var.semantic_breakpoint_percentile_threshold
 }

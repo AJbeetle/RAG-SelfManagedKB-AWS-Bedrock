@@ -1,0 +1,50 @@
+region            = "us-east-1"
+state_bucket_name = "replace-with-terraform-state-bucket"
+state_region      = "us-east-1"
+state_key_prefix  = "live/dev"
+
+data_source_name  = "my-s3-docs"
+s3_bucket_arn     = "arn:aws:s3:::my-existing-docs-bucket"
+s3_inclusion_prefixes = ["items/"] # [Optional] Limits ingestion to specific folders inside the S3 bucket. Default value is empty list [] which means all files in the S3 bucket will be ingested.
+deletion_policy   = "DELETE" # [Optional] Data deletion policy: DELETE or RETAIN. Default is DELETE.
+
+
+# -----------------------------------------------------------------------------
+# Chunking Strategy Configuration
+# -----------------------------------------------------------------------------
+# You can choose from the following chunking strategies:
+# - FIXED_SIZE: Splits text into chunks of a fixed approximate size.
+# - HIERARCHICAL: Creates parent-child chunks (useful for preserving context).
+# - SEMANTIC: Uses natural language processing to split text at meaningful boundaries.
+# - NONE: Disables chunking entirely.
+
+chunking_strategy = "FIXED_SIZE"
+
+# FIXED_SIZE Configuration [following are all default values]
+fixed_size_max_tokens         = 300 
+fixed_size_overlap_percentage = 20
+
+# HIERARCHICAL Configuration [following are all default values]
+hierarchical_parent_max_tokens = 1500
+hierarchical_child_max_tokens  = 300
+hierarchical_overlap_tokens    = 60
+
+# SEMANTIC Configuration [following are all default values]
+semantic_max_tokens                      = 300
+semantic_breakpoint_percentile_threshold = 95
+
+# -----------------------------------------------------------------------------
+# Parsing Strategy Configuration
+# -----------------------------------------------------------------------------
+# You can choose from the following parsing strategies:
+# - BEDROCK_FOUNDATION_MODEL: Uses a Foundation Model to parse non-text data (e.g., images/PDFs).
+# - BEDROCK_DATA_AUTOMATION: Uses Bedrock Data Automation.
+# - NONE: Standard parsing.
+
+parsing_strategy = "BEDROCK_FOUNDATION_MODEL"  # default -> NONE 
+
+# Required if parsing_strategy is BEDROCK_FOUNDATION_MODEL:
+parsing_model_arn = "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0"
+
+# Optional instructions for the model:
+parsing_prompt    = "Extract text from these documents. Pay special attention to tables."
